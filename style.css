@@ -26,3 +26,9 @@
         margin: 10px;
         background-color:aqua;
     }
+    label{
+        margin: 5px;
+    }
+    input{
+        margin: 5px;
+    }

@@ -12,6 +12,53 @@
     <?php
     require_once 'config.php';
 
+    $host = '127.0.0.1';
+    $dbname = 'sotrudniki';
+    $username = 'root';
+    $password = '';
+
+            
+    //добавление нового сотрудника
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['FIO'])) {
+    $FIO = $_POST['FIO'];
+    $DataRozhdenia = $_POST['DataRozhdenia'];
+    $Pasport = $_POST['Pasport'];
+    $KontaktnayaInfa = $_POST['KontaktnayaInfa'];
+    $Adres = $_POST['Adres'];
+    $Otdel = $_POST['Otdel'];
+    $Dolzhnost = $_POST['Dolzhnost'];
+    $Zarplata = $_POST['Zarplata'];
+    $DataPrinatia = $_POST['DataPrinatia'];
+    $Statusr = $_POST['Statusr'];
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "INSERT INTO Sotr (FIO, DataRozhdenia, Pasport, KontaktnayaInfa, Adres, Otdel, Dolzhnost, Zarplata, DataPrinatia, Statusr)
+                VALUES (:FIO, :DataRozhdenia, :Pasport, :KontaktnayaInfa, :Adres, :Otdel, :Dolzhnost, :Zarplata, :DataPrinatia, :Statusr)";
+    
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+            ':FIO' => $FIO,
+            ':DataRozhdenia' => $DataRozhdenia,
+            ':Pasport' => $Pasport,
+            ':KontaktnayaInfa' => $KontaktnayaInfa,
+            ':Adres' => $Adres,
+            ':Otdel' => $Otdel,
+            ':Dolzhnost' => $Dolzhnost,
+            ':Zarplata' => $Zarplata,
+            ':DataPrinatia' => $DataPrinatia,
+            ':Statusr' => $Statusr
+        ]);
+    
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } catch (PDOException $e) {
+        echo "Ошибка: " . $e->getMessage();
+    }
+}
+
+
     //запрос для фильта по отделу и должности
     $FOtdel = isset($_GET['FOtdel']) ?$_GET['FOtdel'] : '';
     $FDolzhnost = isset($_GET['FDolzhnost']) ? $_GET['FDolzhnost'] : '';
@@ -64,21 +111,36 @@
                 <td> <?php echo htmlspecialchars($item['Dolzhnost']);?></td>
                 <td> <?php echo htmlspecialchars($item['Zarplata']);?></td>
                 <td> <?php echo htmlspecialchars($item['DataPrinatia']);?></td>
-                <td> <?php echo htmlspecialchars($item['Status']);?></td>
+                <td> <?php echo htmlspecialchars($item['Statusr']);?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
     </table>
     <h3> Фильтрация по должности или отделу: </h3>
     <form class = "filtr" method="GET" action="">
+        <label   class = "filtr" for="Otdel">Отдел:</label>
+        <input type="text" id="Otdel" name="FOtdel" value="<?php echo htmlspecialchars($FOtdel); ?>">
+        
+        <label  class = "filtr" for="Dolzhnost">Должность:</label>
+        <input type="text" id="Dolzhnost" name="FDolzhnost" value="<?php echo htmlspecialchars($FDolzhnost); ?>">
+        <button type="submit">Найти</button>
+    </form>
 
-    <label   class = "filtr" for="Otdel">Отдел:</label>
-    <input type="text" id="Otdel" name="FOtdel" value="<?php echo htmlspecialchars($FOtdel); ?>">
 
-    <label  class = "filtr" for="Dolzhnost">Должность:</label>
-    <input type="text" id="Dolzhnost" name="FDolzhnost" value="<?php echo htmlspecialchars($FDolzhnost); ?>">
+    <h3>Добавить нового сотрудника:</h3>
 
-    <button type="submit">Найти</button>
+    <form method="POST" action="">
+    <input type="text" name="FIO" placeholder="ФИО" required><br>
+    <input type="date" name="DataRozhdenia" placeholder="Дата рождения" required><br>
+    <input type="text" name="Pasport" placeholder="Паспорт" required><br>
+    <input type="text" name="KontaktnayaInfa" placeholder="+7(___)___-__-__" required><br>
+    <input type="text" name="Adres" placeholder="Адрес проживания" required><br>
+    <input type="text" name="Otdel" placeholder="Отдел" required><br>
+    <input type="text" name="Dolzhnost" placeholder="Должность" required><br>
+    <input type="number" name="Zarplata" placeholder="Зарплата" required><br>
+    <input type="date" name="DataPrinatia" placeholder="Дата принятия на работу" required><br>
+    <input type="text" name="Statusr" placeholder="Статус работы" required>
+    <button type="submit">Добавить сотрудника</button>
     </form>
     </body>
     </html>    
