@@ -81,6 +81,23 @@
     while ($row = mysqli_fetch_assoc($result)) {
     $list[] = $row;
     }
+    //запрос на увольнение сотрудника
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
+        $id = $_POST['id'];
+        try {
+            $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            $sql = "UPDATE Sotr SET Statusr = 'Уволен' WHERE ID = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id' => $id]);
+    
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        } catch (PDOException $e) {
+            echo "Ошибка: " . $e->getMessage();
+        }
+    }
     ?>
     <h1>Сотрудники организации</h1>
     <table>
@@ -140,6 +157,12 @@
     <input type="date" name="DataPrinatia" placeholder="Дата принятия на работу" required><br>
     <input type="text" name="Statusr" placeholder="Статус работы" required>
     <button type="submit">Добавить сотрудника</button>
+    </form>
+
+    <h3>Уволить сотрудника по ID:</h3>
+    <form method="POST" action="">
+    <input type="number" name="id" placeholder="Введите ID сотрудника" required>
+    <button type="submit">Уволить</button>
     </form>
     </body>
     </html>    
