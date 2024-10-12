@@ -1,0 +1,19 @@
+    h1 {
+        text-align: center;
+    }
+    body{
+        font-size: 16px;
+        align-content: center;
+    }
+    table {
+        table-layout: fixed;
+        width: 97%;
+        border-collapse: collapse;
+        border: 2px solid rgb(0, 0, 0);
+    }
+    th,
+    td {
+        padding: 5px;
+        border: 2px solid rgb(0, 0, 0);
+        text-align: center;
+    }
