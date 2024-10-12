@@ -5,11 +5,23 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="style.css" rel="stylesheet" type="text/css">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="jquery.maskedinput.min.js"></script>
         <title>Учёт сотрудников</title>
     </head>
-
     <body> 
+    <script>
+            $(function(){
+                $("#pasport").mask("9999 999999");
+            });
+    </script>
+    <script>
+            $(function(){
+                $("#phone").mask("+7(999)999-99-99");
+            });
+    </script>
     <?php
+    
     require_once 'config.php';
 
     $host = '127.0.0.1';
@@ -107,7 +119,7 @@
         <th>Дата рождения</th>
         <th>Паспорт</th>
         <th>Контактная информация</th>
-        <th style=width:15%;>Адрес</th>
+        <th style=width:10%;>Адрес</th>
         <th>Отдел</th>
         <th>Должность</th>
         <th>Зарплата</th>
@@ -148,8 +160,8 @@
     <form method="POST" action="">
     <input type="text" name="FIO" placeholder="ФИО" required><br>
     <input type="date" name="DataRozhdenia" placeholder="Дата рождения" required><br>
-    <input type="text" name="Pasport" placeholder="Паспорт" required><br>
-    <input type="text" name="KontaktnayaInfa" placeholder="+7(___)___-__-__" required><br>
+    <input type="text" id="pasport" name="Pasport" placeholder="____ ______" required><br>
+    <input type="text" id="phone" name="KontaktnayaInfa" placeholder="+7(___)___-__-__" required><br>
     <input type="text" name="Adres" placeholder="Адрес проживания" required><br>
     <input type="text" name="Otdel" placeholder="Отдел" required><br>
     <input type="text" name="Dolzhnost" placeholder="Должность" required><br>
