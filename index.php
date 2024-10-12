@@ -55,12 +55,11 @@
     } catch (PDOException $e) {
         echo "Ошибка: " . $e->getMessage();
     }
-}
+    }
 
-    //запрос для фильта по отделу и должности
+    //запрос для фильта по отделу и должности и фио
     $FOtdel = isset($_GET['FOtdel']) ?$_GET['FOtdel'] : '';
-    $FDolzhnost = isset($_GET['FDolzhnost']) ? $_GET['FDolzhnost'] : '';
-
+    $FDolzhnost = isset($_GET['FDolzhnost']) ?$_GET['FDolzhnost'] : '';$FFIO = isset($_GET['FFIO']) ?$_GET['FFIO'] : '';
     $query = "SELECT * FROM sotr WHERE 1=1";
     if ($FOtdel) {
         $query .= " AND Otdel LIKE '%$FOtdel%'";
@@ -68,25 +67,10 @@
     if ($FDolzhnost) {
         $query .= " AND Dolzhnost LIKE '%$FDolzhnost%'";
     }
-
-    $result = mysqli_query($conn, $query);
-
-    if (!$result) {
-        die("Ошибка запроса: " . mysqli_error($conn));
-    }
-
-    $list = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-    $list[] = $row;
-    }
-
-    //запрос для фильта по ФИО
-    $FFIO = isset($_GET['FFIO']) ?$_GET['FFIO'] : '';
-    $query = "SELECT * FROM sotr WHERE 1=1";
     if ($FFIO) {
         $query .= " AND FIO LIKE '%$FFIO%'";
     }
-    
+
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -97,7 +81,6 @@
     while ($row = mysqli_fetch_assoc($result)) {
     $list[] = $row;
     }
-
     ?>
     <h1>Сотрудники организации</h1>
     <table>
@@ -132,13 +115,15 @@
         <?php endforeach; ?>
     </tbody>
     </table>
-    <h3> Фильтрация по должности или отделу: </h3>
+    <h3> Фильтрация по должности/отделу/фио: </h3>
     <form class = "filtr" method="GET" action="">
-        <label   class = "filtr" for="Otdel">Отдел:</label>
+        <label class = "filtr" for="Otdel">Отдел:</label>
         <input type="text" id="Otdel" name="FOtdel" value="<?php echo htmlspecialchars($FOtdel); ?>">
         
-        <label  class = "filtr" for="Dolzhnost">Должность:</label>
+        <label class = "filtr" for="Dolzhnost">Должность:</label>
         <input type="text" id="Dolzhnost" name="FDolzhnost" value="<?php echo htmlspecialchars($FDolzhnost); ?>">
+        <label class = "filtr" for="FIO">ФИО:</label>
+        <input type="text" id="FIO" name="FFIO" value="<?php echo htmlspecialchars($FFIO); ?>">
         <button type="submit">Найти</button>
     </form>
 
@@ -155,12 +140,6 @@
     <input type="date" name="DataPrinatia" placeholder="Дата принятия на работу" required><br>
     <input type="text" name="Statusr" placeholder="Статус работы" required>
     <button type="submit">Добавить сотрудника</button>
-    </form>
-    <h3> Фильтрация по ФИО: </h3>
-    <form class = "filtr" method="GET" action="">
-        <label   class = "filtr" for="FIO">ФИО:</label>
-        <input type="text" id="FIO" name="FFIO" value="<?php echo htmlspecialchars($FFIO); ?>">
-        <button type="submit">Найти</button>
     </form>
     </body>
     </html>    
