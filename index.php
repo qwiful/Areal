@@ -17,7 +17,6 @@
     $username = 'root';
     $password = '';
 
-            
     //добавление нового сотрудника
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['FIO'])) {
     $FIO = $_POST['FIO'];
@@ -58,7 +57,6 @@
     }
 }
 
-
     //запрос для фильта по отделу и должности
     $FOtdel = isset($_GET['FOtdel']) ?$_GET['FOtdel'] : '';
     $FDolzhnost = isset($_GET['FDolzhnost']) ? $_GET['FDolzhnost'] : '';
@@ -71,6 +69,24 @@
         $query .= " AND Dolzhnost LIKE '%$FDolzhnost%'";
     }
 
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die("Ошибка запроса: " . mysqli_error($conn));
+    }
+
+    $list = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+    $list[] = $row;
+    }
+
+    //запрос для фильта по ФИО
+    $FFIO = isset($_GET['FFIO']) ?$_GET['FFIO'] : '';
+    $query = "SELECT * FROM sotr WHERE 1=1";
+    if ($FFIO) {
+        $query .= " AND FIO LIKE '%$FFIO%'";
+    }
+    
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -126,9 +142,7 @@
         <button type="submit">Найти</button>
     </form>
 
-
     <h3>Добавить нового сотрудника:</h3>
-
     <form method="POST" action="">
     <input type="text" name="FIO" placeholder="ФИО" required><br>
     <input type="date" name="DataRozhdenia" placeholder="Дата рождения" required><br>
@@ -141,6 +155,12 @@
     <input type="date" name="DataPrinatia" placeholder="Дата принятия на работу" required><br>
     <input type="text" name="Statusr" placeholder="Статус работы" required>
     <button type="submit">Добавить сотрудника</button>
+    </form>
+    <h3> Фильтрация по ФИО: </h3>
+    <form class = "filtr" method="GET" action="">
+        <label   class = "filtr" for="FIO">ФИО:</label>
+        <input type="text" id="FIO" name="FFIO" value="<?php echo htmlspecialchars($FFIO); ?>">
+        <button type="submit">Найти</button>
     </form>
     </body>
     </html>    
