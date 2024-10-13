@@ -175,7 +175,7 @@
         <input type="text" id="Dolzhnost" name="FDolzhnost" value="<?php echo htmlspecialchars($FDolzhnost); ?>">
         <label class = "filtr" for="FIO">ФИО:</label>
         <input type="text" id="FIO" name="FFIO" value="<?php echo htmlspecialchars($FFIO); ?>">
-        <button type="submit">Найти</button>
+        <button class="btn btn-white btn-        animate" type="submit">Найти</button>
     </form>
 
     <h3>Добавить/редактировать сотрудника:</h3>
@@ -192,13 +192,13 @@
         <input type="number" name="Zarplata" placeholder="Зарплата" required><br>
         <input type="date" name="DataPrinatia" placeholder="Дата принятия на работу" required><br>
         <input type="text" name="Statusr" placeholder="Статус работы" required>
-        <button type="submit">Добавить сотрудника</button>
+        <button class="btn btn-white btn-        animate" type="submit">Добавить сотрудника</button>
     </form>
 
     <h3>Уволить сотрудника по ID:</h3>
     <form method="POST" action="">
         <input type="number" name="id" placeholder="Введите ID сотрудника" required>
-        <button type="submit">Уволить</button>
+        <button class="btn btn-white btn-        animate" type="submit">Уволить</button>
     </form>
     </body>
     </html>    
