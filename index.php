@@ -42,6 +42,14 @@
             $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if ($ID) {
+                $sql = "SELECT Statusr FROM Sotr WHERE ID = :ID";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([':ID' => $ID]);
+                $currentStatus = $stmt->fetchColumn();
+                if ($currentStatus === 'Уволен') {
+                    echo "Ошибка: Нельзя редактировать сотрудника со статусом 'Уволен'";
+                    exit();
+                }
                 $sql = "UPDATE Sotr SET FIO = :FIO, DataRozhdenia = :DataRozhdenia, Pasport = :Pasport, KontaktnayaInfa = :KontaktnayaInfa, 
                 Adres = :Adres, Otdel = :Otdel, Dolzhnost = :Dolzhnost, Zarplata = :Zarplata, DataPrinatia = :DataPrinatia, 
                 Statusr = :Statusr WHERE ID = :ID";
