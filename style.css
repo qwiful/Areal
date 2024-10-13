@@ -30,5 +30,6 @@
         margin: 5px;
     }
     input{
+        box-sizing: border-box;
         margin: 5px;
     }
